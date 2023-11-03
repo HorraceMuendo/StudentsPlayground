@@ -1,10 +1,11 @@
 package main
 
-import "fmt"
+import (
+	routes "studentsPlayground/Routes"
+)
 
 func main() {
 
-	Routes()
+	routes.Routes()
 
-	fmt.Println("hey there")
 }
