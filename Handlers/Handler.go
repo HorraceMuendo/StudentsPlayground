@@ -7,7 +7,12 @@ import (
 	"github.com/gorilla/websocket"
 )
 
-func Reader(conn *websocket.Conn) {
+var Upgraderr = websocket.Upgrader{
+	ReadBufferSize:  1024,
+	WriteBufferSize: 1024,
+}
+
+func ReadMessage(conn *websocket.Conn) {
 
 	message, payload, err := conn.ReadMessage()
 	if err != nil {
