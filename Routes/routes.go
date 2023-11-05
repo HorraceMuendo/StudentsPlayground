@@ -39,7 +39,7 @@ func wsEndpoint(w http.ResponseWriter, r *http.Request) {
 }
 
 func Routes() {
-	http.HandleFunc("/", homePage)
+	http.HandleFunc("/", wsEndpoint)
 	log.Printf("starting server at port %s", port)
 	log.Fatal(http.ListenAndServe(port, nil))
 }

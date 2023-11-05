@@ -20,7 +20,7 @@ func ReadMessage(conn *websocket.Conn) {
 		return
 	}
 
-	fmt.Println(string(payload))
+	fmt.Println("From the Client::", string(payload))
 
 	if err := conn.WriteMessage(message, payload); err != nil {
 		log.Println(err)
