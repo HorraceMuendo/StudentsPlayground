@@ -14,16 +14,17 @@ var Upgraderr = websocket.Upgrader{
 
 func ReadMessage(conn *websocket.Conn) {
 
-	message, payload, err := conn.ReadMessage()
+	_, payload, err := conn.ReadMessage()
 	if err != nil {
 		log.Println(err)
 		return
 	}
 
-	fmt.Println("From the Client::", string(payload))
+	fmt.Println("CLIENT: ", string(payload))
 
-	if err := conn.WriteMessage(message, payload); err != nil {
-		log.Println(err)
-		return
-	}
+	// // Echo the received message back to the client
+	// if err := conn.WriteMessage(message, payload); err != nil {
+	// 	log.Println(err)
+	// 	return
+	// }
 }

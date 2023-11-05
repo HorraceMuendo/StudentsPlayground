@@ -5,6 +5,8 @@ import (
 	"log"
 	"net/http"
 	handlers "studentsPlayground/Handlers"
+
+	"github.com/gorilla/websocket"
 )
 
 var port = ":4300"
@@ -29,17 +31,21 @@ func wsEndpoint(w http.ResponseWriter, r *http.Request) {
 
 	log.Println("The client is connected \n")
 
+	var message string
+	fmt.Scanln(&message)
+	m := []byte(message)
+
 	// writing back to the client
-	err = ws.WriteMessage(1, []byte("Welcome to students playground client......"))
+	err = ws.WriteMessage(websocket.TextMessage, m)
 	if err != nil {
 		log.Println(err)
 	}
 
-	handlers.ReadMessage(ws)
+	go handlers.ReadMessage(ws)
 }
 
 func Routes() {
-	http.HandleFunc("/", wsEndpoint)
+	http.HandleFunc("/ws", wsEndpoint)
 	log.Printf("starting server at port %s", port)
 	log.Fatal(http.ListenAndServe(port, nil))
 }

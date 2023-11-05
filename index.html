@@ -7,17 +7,39 @@
     <title>StudentsPlayground</title>
 </head>
 <body>
-    <h1>Welcome on Board</h1>
+    <h1 >Welcome on Board</h1>
+    <input type="text" id="messageInput" placeholder="Enter a message">
+    <button id="sendButton">Send</button>
+    <div id="messages"></div>
 
     <Script>
-        let socket = new WebSocket("ws://127.0.0.1:4300");
-            console.log("Attempting to connect to the webserver");
+        let socket = new WebSocket("ws://127.0.0.1:4300/ws");
+            console.log("Attempting to connect to the webserver....");
         socket.onopen = () => {
             console.log("connection was a success!!!");
-            socket.send("Hello from Client");
+            //sending a message to the server
+            socket.send("Hello there I'm connected ");
+        };
+        // client continuosly listens to server communications with the on message
+        socket.onmessage = (event) => {
+                //get and echo recieved message from the server
+                const recievedMessage = document.getElementById("messages");
+                //printng to the screen
+                recievedMessage.innerHTML+= " <p> SERVER: " + event.data + "</p>"
+                //log to the console
+                console.log("SERVER: " + event.data);
+        };
+        socket.onclose = () =>{
+            console.log("connection terminated");
+
         }
-
-
+        //writing to the server
+        document.getElementById("sendButton").addEventListener("click",()=>{
+            const messageInput = document.getElementById("messageInput");
+            const messageValue = messageInput.value;
+            socket.send(messageValue);
+            messageInput.value= ""; // clear the input field
+        });
     </Script>
 </body>
 </html>
