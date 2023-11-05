@@ -30,7 +30,7 @@ func wsEndpoint(w http.ResponseWriter, r *http.Request) {
 	log.Println("The client is connected \n")
 
 	// writing back to the client
-	err = ws.WriteMessage(1, []byte("Welcome to students playground client"))
+	err = ws.WriteMessage(1, []byte("Welcome to students playground client......"))
 	if err != nil {
 		log.Println(err)
 	}

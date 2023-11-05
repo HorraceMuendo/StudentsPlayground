@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudentsPlayground</title>
+</head>
+<body>
+    <h1>Welcome on Board</h1>
+
+    <Script>
+        let socket = new WebSocket("ws://127.0.0.1:4300");
+            console.log("Attempting to connect to the webserver");
+        socket.onopen = () => {
+            console.log("connection was a success!!!");
+            socket.send("Hello from Client");
+        }
+
+
+    </Script>
+</body>
+</html>
