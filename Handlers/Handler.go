@@ -3,24 +3,55 @@ package handlers
 import (
 	"fmt"
 	"log"
+	"net/http"
 
 	"github.com/gorilla/websocket"
 )
 
-var Upgraderr = websocket.Upgrader{
-	ReadBufferSize:  1024,
-	WriteBufferSize: 1024,
-}
-
-func ReadMessage(conn *websocket.Conn) {
-
-	_, payload, err := conn.ReadMessage()
-	if err != nil {
-		log.Println(err)
-		return
+var (
+	Upgraderr = websocket.Upgrader{
+		ReadBufferSize:  1024,
+		WriteBufferSize: 1024,
 	}
 
-	fmt.Println("CLIENT: ", string(payload))
+	conn []websocket.Conn
+)
+
+func ReadWriteMessage(w http.ResponseWriter, r *http.Request) {
+	//upgrade connection
+	ws, err := Upgraderr.Upgrade(w, r, nil)
+	if err != nil {
+		log.Println(err)
+	}
+
+	log.Println("The client is connected \n")
+
+	conn = append(conn, *ws)
+
+	for {
+
+		msgType, msg, err := ws.ReadMessage()
+		if err != nil {
+			log.Println(err)
+		}
+		// log to the terminal
+		log.Println("%s CLIENT : %s\n", ws.RemoteAddr(), string(msg))
+
+		for _, client := range conn {
+			if err = client.WriteMessage(msgType, msg); err != nil {
+				fmt.Println(err)
+			}
+		}
+
+	}
+
+	// _, payload, err := conn.ReadMessage()
+	// if err != nil {
+	// 	log.Println(err)
+	// 	return
+	// }
+
+	// fmt.Println("CLIENT: ", string(payload))
 
 	// // Echo the received message back to the client
 	// if err := conn.WriteMessage(message, payload); err != nil {
@@ -28,3 +59,19 @@ func ReadMessage(conn *websocket.Conn) {
 	// 	return
 	// }
 }
+
+// dummy code for writing to client from server
+
+// for {
+// 	var message string
+// 	fmt.Scanln(&message)
+// 	m := []byte(message)
+
+// 	// writing back to the client
+// 	err = ws.WriteMessage(websocket.TextMessage, m)
+// 	if err != nil {
+// 		log.Println(err)
+// 	}
+// 	go handlers.ReadMessage(ws)
+
+// }

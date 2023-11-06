@@ -5,8 +5,6 @@ import (
 	"log"
 	"net/http"
 	handlers "studentsPlayground/Handlers"
-
-	"github.com/gorilla/websocket"
 )
 
 var port = ":4300"
@@ -24,24 +22,11 @@ func wsEndpoint(w http.ResponseWriter, r *http.Request) {
 
 	// Attempting to upragrade the connection to a websocket
 
-	ws, err := handlers.Upgraderr.Upgrade(w, r, nil)
-	if err != nil {
-		log.Println(err)
-	}
+	go handlers.ReadWriteMessage()
 
-	log.Println("The client is connected \n")
+	//write a for loop to iterarte over all the bytes
 
-	var message string
-	fmt.Scanln(&message)
-	m := []byte(message)
-
-	// writing back to the client
-	err = ws.WriteMessage(websocket.TextMessage, m)
-	if err != nil {
-		log.Println(err)
-	}
-
-	go handlers.ReadMessage(ws)
+	//go handlers.ReadMessage(ws)
 }
 
 func Routes() {
