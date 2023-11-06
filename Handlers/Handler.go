@@ -21,7 +21,7 @@ func HomePage(w http.ResponseWriter, r *http.Request) {
 	http.ServeFile(w, r, "/home/muendo/Desktop/studentsPlayground/index.html")
 }
 
-func wsEndpoint(w http.ResponseWriter, r *http.Request) {
+func WSEndpoint(w http.ResponseWriter, r *http.Request) {
 	//checks if the incoming request can connect
 
 	upgrader.CheckOrigin = func(r *http.Request) bool { return true }

@@ -9,7 +9,7 @@
 <body>
     <h1 >Welcome on Board</h1>
     <input type="text" id="messageInput" placeholder="Enter a message">
-    <button id="sendButton">Send</button>
+    <button onclick="send()">Send</button>
     <div id="messages"></div>
 
     <Script>
@@ -33,13 +33,13 @@
             console.log("connection terminated");
 
         }
-        //writing to the server
-        document.getElementById("sendButton").addEventListener("click",()=>{
+         //writing to the server
+        function send() {
             const messageInput = document.getElementById("messageInput");
-            const messageValue = messageInput.value;
-            socket.send(messageValue);
+            socket.send(messageInput.value);
             messageInput.value= ""; // clear the input field
-        });
+        }
+       
     </Script>
 </body>
 </html>
