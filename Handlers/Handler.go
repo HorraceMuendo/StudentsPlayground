@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	Upgraderr = websocket.Upgrader{
+	upgrader = websocket.Upgrader{
 		ReadBufferSize:  1024,
 		WriteBufferSize: 1024,
 	}
@@ -17,9 +17,18 @@ var (
 	conn []websocket.Conn
 )
 
-func ReadWriteMessage(w http.ResponseWriter, r *http.Request) {
-	//upgrade connection
-	ws, err := Upgraderr.Upgrade(w, r, nil)
+func HomePage(w http.ResponseWriter, r *http.Request) {
+	http.ServeFile(w, r, "/home/muendo/Desktop/studentsPlayground/index.html")
+}
+
+func wsEndpoint(w http.ResponseWriter, r *http.Request) {
+	//checks if the incoming request can connect
+
+	upgrader.CheckOrigin = func(r *http.Request) bool { return true }
+
+	// Attempting to upragrade the connection to a websocket
+
+	ws, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		log.Println(err)
 	}
@@ -45,20 +54,21 @@ func ReadWriteMessage(w http.ResponseWriter, r *http.Request) {
 
 	}
 
-	// _, payload, err := conn.ReadMessage()
-	// if err != nil {
-	// 	log.Println(err)
-	// 	return
-	// }
-
-	// fmt.Println("CLIENT: ", string(payload))
-
-	// // Echo the received message back to the client
-	// if err := conn.WriteMessage(message, payload); err != nil {
-	// 	log.Println(err)
-	// 	return
-	// }
 }
+
+// _, payload, err := conn.ReadMessage()
+// if err != nil {
+// 	log.Println(err)
+// 	return
+// }
+
+// fmt.Println("CLIENT: ", string(payload))
+
+// // Echo the received message back to the client
+// if err := conn.WriteMessage(message, payload); err != nil {
+// 	log.Println(err)
+// 	return
+// }
 
 // dummy code for writing to client from server
 
