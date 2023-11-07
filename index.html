@@ -13,19 +13,23 @@
     <div id="messages"></div>
 
     <Script>
+        var recievedMessage = document.getElementById("messages");
+        var messageInput = document.getElementById("messageInput");
         let socket = new WebSocket("ws://127.0.0.1:4300/ws");
             console.log("Attempting to connect to the webserver....");
+
         socket.onopen = () => {
+            recievedMessage.innerHTML += "STATUS:: connected"
             console.log("connection was a success!!!");
             //sending a message to the server
-            socket.send("Hello there I'm connected ");
+            // socket.send(" connected ");
         };
         // client continuosly listens to server communications with the on message
         socket.onmessage = (event) => {
                 //get and echo recieved message from the server
-                const recievedMessage = document.getElementById("messages");
+                
                 //printng to the screen
-                recievedMessage.innerHTML+= " <p> SERVER: " + event.data + "</p>"
+                recievedMessage.innerHTML+= " <p> message:      " + event.data + "</p>"
                 //log to the console
                 console.log("SERVER: " + event.data);
         };
@@ -35,7 +39,6 @@
         }
          //writing to the server
         function send() {
-            const messageInput = document.getElementById("messageInput");
             socket.send(messageInput.value);
             messageInput.value= ""; // clear the input field
         }

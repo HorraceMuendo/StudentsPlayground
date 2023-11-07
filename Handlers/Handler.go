@@ -2,8 +2,10 @@ package handlers
 
 import (
 	"fmt"
+	"io"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/gorilla/websocket"
 )
@@ -56,32 +58,14 @@ func WSEndpoint(w http.ResponseWriter, r *http.Request) {
 
 }
 
-// _, payload, err := conn.ReadMessage()
-// if err != nil {
-// 	log.Println(err)
-// 	return
-// }
+func FileTransfer() {
 
-// fmt.Println("CLIENT: ", string(payload))
-
-// // Echo the received message back to the client
-// if err := conn.WriteMessage(message, payload); err != nil {
-// 	log.Println(err)
-// 	return
-// }
-
-// dummy code for writing to client from server
-
-// for {
-// 	var message string
-// 	fmt.Scanln(&message)
-// 	m := []byte(message)
-
-// 	// writing back to the client
-// 	err = ws.WriteMessage(websocket.TextMessage, m)
-// 	if err != nil {
-// 		log.Println(err)
-// 	}
-// 	go handlers.ReadMessage(ws)
-
-// }
+	file, err := os.Create("test.txt")
+	if err != nil {
+		fmt.Println("Error creating file", err)
+	}
+	writer := io.Writer(file)
+	n, err := writer.Write([]byte("file trans"))
+	fmt.Println(n, err)
+	defer file.Close()
+}
