@@ -58,6 +58,8 @@ func WSEndpoint(w http.ResponseWriter, r *http.Request) {
 
 }
 
+// work on the upload first then the sending
+
 func FileTransfer() {
 
 	file, err := os.Create("test.txt")
