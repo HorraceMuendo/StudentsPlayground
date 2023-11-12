@@ -20,7 +20,7 @@ var (
 )
 
 func HomePage(w http.ResponseWriter, r *http.Request) {
-	http.ServeFile(w, r, "/home/muendo/Desktop/studentsPlayground/index.html")
+	http.ServeFile(w, r, "/home/muendo/Desktop/studentsPlayground/Front-end/index.html")
 }
 
 func WSEndpoint(w http.ResponseWriter, r *http.Request) {
@@ -60,7 +60,10 @@ func WSEndpoint(w http.ResponseWriter, r *http.Request) {
 
 // work on the upload first then the sending
 
-func FileTransfer() {
+// To-do
+//fuuuuuuuck im so blank
+
+func FileTransfer(w http.ResponseWriter, r *http.Request) error {
 
 	file, err := os.Create("test.txt")
 	if err != nil {
@@ -70,4 +73,6 @@ func FileTransfer() {
 	n, err := writer.Write([]byte("file trans"))
 	fmt.Println(n, err)
 	defer file.Close()
+
+	return nil
 }
